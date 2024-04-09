@@ -20,6 +20,7 @@ const gameOptions = {
 
   // local storage object name
   localStorageName: "bestFlappyScore",
+  backgroundSpeed: 1,
 };
 
 window.onload = function () {
@@ -55,11 +56,25 @@ class playGame extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image("background", "assets/background.png");
     this.load.image("bird", "assets/bird.png");
     this.load.image("pipe", "assets/pipe.png");
   }
 
   create() {
+    this.background = this.add.tileSprite(
+      game.config.width / 2,
+      game.config.height / 2,
+      game.config.width,
+      game.config.height,
+      "background"
+    );
+    this.background.setScale(
+      Math.max(
+        game.config.width / this.background.width,
+        game.config.height / this.background.height
+      )
+    );
     this.pipeGroup = this.physics.add.group();
     this.pipePool = [];
     for (let i = 0; i < 4; i++) {
@@ -135,6 +150,7 @@ class playGame extends Phaser.Scene {
   }
 
   update() {
+    this.background.tilePositionX += gameOptions.backgroundSpeed;
     this.physics.world.collide(
       this.bird,
       this.pipeGroup,
