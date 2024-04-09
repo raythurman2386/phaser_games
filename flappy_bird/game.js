@@ -51,6 +51,7 @@ window.onload = function () {
 class playGame extends Phaser.Scene {
   constructor() {
     super("PlayGame");
+    this.leftmostPipe = null;
   }
 
   preload() {
@@ -79,6 +80,8 @@ class playGame extends Phaser.Scene {
         : localStorage.getItem(gameOptions.localStorageName);
     this.scoreText = this.add.text(10, 10, "");
     this.updateScore(this.score);
+
+    this.leftmostPipe = this.pipeGroup.getChildren()[0];
   }
 
   updateScore(inc) {
@@ -87,7 +90,7 @@ class playGame extends Phaser.Scene {
   }
 
   placePipes(addScore) {
-    let rightmost = this.getRightmostPipe();
+    let rightmostPipe = this.getRightmostPipe();
     let pipeHoleHeight = Phaser.Math.Between(
       gameOptions.pipeHole[0],
       gameOptions.pipeHole[1]
@@ -98,17 +101,19 @@ class playGame extends Phaser.Scene {
       game.config.height - gameOptions.minPipeHeight - pipeHoleHeight / 2
     );
 
-    this.pipePool[0].x =
-      rightmost +
+    // Calculate the new pipe position based on the rightmost pipe
+    let newPipeX =
+      rightmostPipe +
       this.pipePool[0].getBounds().width +
       Phaser.Math.Between(
         gameOptions.pipeDistance[0],
         gameOptions.pipeDistance[1]
       );
 
+    this.pipePool[0].x = newPipeX;
     this.pipePool[0].y = pipeHolePosition - pipeHoleHeight / 2;
     this.pipePool[0].setOrigin(0, 1);
-    this.pipePool[1].x = this.pipePool[0].x;
+    this.pipePool[1].x = newPipeX;
     this.pipePool[1].y = pipeHolePosition + pipeHoleHeight / 2;
     this.pipePool[1].setOrigin(0, 0);
     this.pipePool = [];
@@ -151,6 +156,14 @@ class playGame extends Phaser.Scene {
         }
       }
     }, this);
+
+    if (this.leftmostPipe.getBounds().right < 0) {
+      this.pipePool.push(this.leftmostPipe);
+      this.leftmostPipe = this.pipeGroup.getChildren()[0];
+      if (this.pipePool.length == 2) {
+        this.placePipes(true);
+      }
+    }
   }
 
   die() {
