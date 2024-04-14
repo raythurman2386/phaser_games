@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sprite Animation Basics</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.24.1/dist/phaser.min.js"></script>
+</head>
+
+<body>
+    <div id="game"></div>
+    <script>
+
+        const phaserConfig = {
+            type: Phaser.AUTO,
+            parent: "game",
+            width: 1280,
+            height: 720,
+            scene: {
+                init: initScene,
+                preload: preloadScene,
+                create: createScene,
+                update: updateScene
+            }
+        };
+
+        const game = new Phaser.Game(phaserConfig);
+        let plane;
+
+        function initScene() { }
+        function preloadScene() {
+            this.load.spritesheet("plane", "./assets/plane.png", { frameWidth: 512, frameHeight: 512 })
+        }
+        function createScene() {
+            this.anims.create({
+                key: "fly",
+                frameRate: 7,
+                frames: this.anims.generateFrameNumbers("plane", { start: 3, end: 5 }),
+                repeat: -1
+            });
+
+            this.anims.create({
+                key: "explode",
+                frameRate: 7,
+                frames: this.anims.generateFrameNumbers("plane", { start: 0, end: 2 }),
+                repeat: 2
+            });
+
+            plane = this.add.sprite(640, 360, "plane")
+            plane.play("fly")
+
+            this.time.addEvent({
+                delay: 3000,
+                callback: () => {
+                    plane.play("explode");
+                    plane.once(Phaser.Animations.Events.SPRITE_ANIMATION_COMPLETE, () => {
+                        plane.destroy();
+                        this.scene.restart();
+                    })
+                }
+            });
+        }
+        function updateScene() { }
+
+    </script>
+</body>
+
+</html>
