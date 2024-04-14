@@ -25,10 +25,12 @@
 
         const game = new Phaser.Game(phaserConfig);
         let plane;
+        let pumpkin_dude;
 
         function initScene() { }
         function preloadScene() {
             this.load.spritesheet("plane", "./assets/plane.png", { frameWidth: 512, frameHeight: 512 })
+            this.load.spritesheet("pumpkin_dude", "./assets/pumpkin_dude.png", { frameWidth: 16, frameHeight: 32 })
         }
         function createScene() {
             this.anims.create({
@@ -58,6 +60,16 @@
                     })
                 }
             });
+
+            this.anims.create({
+                key: "run",
+                frameRate: 8,
+                frames: this.anims.generateFrameNumbers("pumpkin_dude", { start: 0, end: 6 }),
+                repeat: -1
+            })
+
+            pumpkin_dude = this.add.sprite(320, 180, "pumkin_dude");
+            pumpkin_dude.play("run")
         }
         function updateScene() { }
 
