@@ -85,9 +85,26 @@
                 frameRate: 8,
                 repeat: -1
             })
+            this.anims.create({
+                key: "attack",
+                frames: this.anims.generateFrameNames("a-king", {
+                    prefix: "attack-",
+                    end: 2
+                }),
+                frameRate: 8,
+                repeat: -1
+            })
+
 
             king = this.add.sprite(920, 180, "king");
             king.play("king-run")
+
+            this.time.addEvent({
+                delay: 3000,
+                callback: () => {
+                    king.play("attack");
+                }
+            });
         }
         function updateScene() { }
 
