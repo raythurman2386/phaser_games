@@ -38,6 +38,7 @@ window.onload = function () {
     physics: {
       default: "arcade",
       arcade: {
+        debug: false,
         gravity: {
           y: 0,
         },
@@ -85,7 +86,8 @@ class playGame extends Phaser.Scene {
 
     this.pipeGroup.setVelocityX(-gameOptions.birdSpeed);
     this.bird = this.physics.add.sprite(80, game.config.height / 2, "bird");
-    this.bird.setDisplaySize(35, 30);
+    this.bird.setDisplaySize(30, 30);
+
     this.bird.body.gravity.y = gameOptions.birdGravity;
     this.input.on("pointerdown", this.flap, this);
     this.score = 0;
@@ -97,6 +99,15 @@ class playGame extends Phaser.Scene {
     this.updateScore(this.score);
 
     this.leftmostPipe = this.pipeGroup.getChildren()[0];
+    this.time.addEvent({
+      delay: 1000,
+      callback: this.delayDone,
+      callbackScope: this,
+      loop: false,
+    });
+  }
+  delayDone() {
+    this.bird.setSize(this.bird.width, this.bird.height, true);
   }
 
   updateScore(inc) {
