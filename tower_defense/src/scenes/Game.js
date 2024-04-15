@@ -124,7 +124,7 @@ export class Game extends Scene {
     this.drawPath();
 
     this.initEnemies();
-    this.drawGrid(this.graphics);
+    // this.drawGrid(this.graphics);
     this.initBullets();
     this.initTurrets();
     this.input.on("pointerdown", (pointer) => {

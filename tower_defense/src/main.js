@@ -11,7 +11,7 @@ const config = {
   pixelArt: true,
   physics: {
     default: "arcade",
-    debug: true,
+    debug: false,
   },
   scale: {
     mode: Phaser.Scale.FIT,

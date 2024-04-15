@@ -5,7 +5,7 @@ export class Turret extends Phaser.GameObjects.Image {
     super(scene, x, y, texture, frame);
     this.nextTic = 0;
     this.map = map;
-    this.setScale(2);
+    this.setScale(1.5);
     this.enemies = enemies;
     this.bullets = bullets;
   }

@@ -4,7 +4,7 @@ export class Enemy extends Phaser.GameObjects.Image {
     this.follower = { t: 0, vec: new Phaser.Math.Vector2() };
     this.path = path;
     this.ENEMY_SPEED = 1 / 10000;
-    this.setScale(2);
+    this.setScale(1.2);
     this.hp = 100;
   }
 
