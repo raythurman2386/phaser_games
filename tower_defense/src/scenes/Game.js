@@ -29,6 +29,11 @@ export class Game extends Scene {
 
   init() {
     this.add.image(512, 384, "map");
+    this.json_map = this.make.tilemap({
+      key: "json_map",
+    });
+    this.tileset = this.json_map.addTilesetImage("towerDefense", "sprites");
+    this.pathLayer = this.json_map.getObjectLayer("EnemyPath");
   }
 
   drawPath() {
@@ -41,7 +46,7 @@ export class Game extends Scene {
     this.path.lineTo(480, 416);
     this.path.lineTo(480, 770);
 
-    this.graphics.lineStyle(3, 0xffffff, 1);
+    this.graphics.lineStyle(3, 0xffffff, 0);
     this.path.draw(this.graphics);
   }
 

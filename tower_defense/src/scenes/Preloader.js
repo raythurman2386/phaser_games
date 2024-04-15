@@ -30,6 +30,7 @@ export class Preloader extends Scene {
       frameHeight: 64,
       startFrame: 0,
     });
+    this.load.tilemapTiledJSON("json_map", "towerDefense.json");
     this.load.image("logo", "logo.png");
     this.load.image("map", "map.png");
     this.load.image("bullet", "bullet.png");
