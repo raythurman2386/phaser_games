@@ -11,6 +11,7 @@ export class Game extends Scene {
     this.enemies = null;
     this.turrets = null;
     this.bullets = null;
+    this.tileWidth = 64;
     this.map = [
       [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -51,29 +52,26 @@ export class Game extends Scene {
   }
 
   drawGrid() {
-    const cellWidth = 1024 / 16; // 64
-    const cellHeight = 768 / 12; // 64
-
     this.graphics.lineStyle(1, 0x0000ff, 0.8);
 
     // Draw horizontal lines
     for (let i = 0; i <= 12; i++) {
-      this.graphics.moveTo(0, i * cellHeight);
-      this.graphics.lineTo(1024, i * cellHeight);
+      this.graphics.moveTo(0, i * this.tileWidth);
+      this.graphics.lineTo(1024, i * this.tileWidth);
     }
 
     // Draw vertical lines
     for (let j = 0; j <= 16; j++) {
-      this.graphics.moveTo(j * cellWidth, 0);
-      this.graphics.lineTo(j * cellWidth, 768);
+      this.graphics.moveTo(j * this.tileWidth, 0);
+      this.graphics.lineTo(j * this.tileWidth, 768);
     }
 
     this.graphics.strokePath();
   }
 
   placeTurret(pointer) {
-    const i = Math.floor(pointer.y / 64);
-    const j = Math.floor(pointer.x / 64);
+    const i = Math.floor(pointer.y / this.tileWidth);
+    const j = Math.floor(pointer.x / this.tileWidth);
     if (this.canPlaceTurret(i, j)) {
       const turret = this.turrets.get();
       if (turret) {
@@ -139,8 +137,8 @@ export class Game extends Scene {
     this.initBullets();
     this.initTurrets();
     this.input.on("pointerdown", (pointer) => {
-      const i = Math.floor(pointer.y / 64);
-      const j = Math.floor(pointer.x / 64);
+      const i = Math.floor(pointer.y / this.tileWidth);
+      const j = Math.floor(pointer.x / this.tileWidth);
       if (this.canPlaceTurret(i, j)) {
         const turret = this.turrets.get();
         if (turret) {

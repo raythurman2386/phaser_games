@@ -23,7 +23,7 @@ export class Turret extends Phaser.GameObjects.Image {
   }
 
   fire() {
-    const enemy = getEnemy(this.enemies, this.x, this.y, 100);
+    const enemy = getEnemy(this.enemies, this.x, this.y, 128);
     if (enemy) {
       const angle = Phaser.Math.Angle.Between(this.x, this.y, enemy.x, enemy.y);
       addBullet(this.bullets, this.x, this.y, angle);
