@@ -3,9 +3,8 @@ import { getEnemy, addBullet } from "../utils";
 export class Turret extends Phaser.GameObjects.Image {
   constructor(scene, x, y, texture, frame, map, enemies, bullets) {
     super(scene, x, y, texture, frame);
-    this.nextTic = 0;
+    this.nextFire = 0;
     this.map = map;
-    this.setScale(1.5);
     this.enemies = enemies;
     this.bullets = bullets;
   }
@@ -17,9 +16,9 @@ export class Turret extends Phaser.GameObjects.Image {
   }
 
   update(time, delta) {
-    if (time > this.nextTic) {
+    if (time > this.nextFire) {
       this.fire();
-      this.nextTic = time + 1000;
+      this.nextFire = time + 1000;
     }
   }
 
