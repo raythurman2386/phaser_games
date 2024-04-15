@@ -12,27 +12,33 @@ export class Game extends Scene {
     this.turrets = null;
     this.bullets = null;
     this.map = [
-      [0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-      [0, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0],
+      [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0],
+      [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0],
+      [0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0],
+      [0, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
     ];
+  }
+
+  init() {
+    this.add.image(512, 384, "map");
   }
 
   drawPath() {
     this.graphics = this.add.graphics();
-    this.path = this.add.path(96, -32);
+    this.path = this.add.path(480, -32);
 
-    this.path.lineTo(96, 164);
     this.path.lineTo(480, 164);
-    this.path.lineTo(480, 544);
+    this.path.lineTo(224, 164);
+    this.path.lineTo(224, 416);
+    this.path.lineTo(480, 416);
     this.path.lineTo(480, 770);
 
     this.graphics.lineStyle(3, 0xffffff, 1);
@@ -46,13 +52,13 @@ export class Game extends Scene {
     this.graphics.lineStyle(1, 0x0000ff, 0.8);
 
     // Draw horizontal lines
-    for (let i = 0; i < 13; i++) {
+    for (let i = 0; i <= 12; i++) {
       this.graphics.moveTo(0, i * cellHeight);
       this.graphics.lineTo(1024, i * cellHeight);
     }
 
     // Draw vertical lines
-    for (let j = 0; j < 17; j++) {
+    for (let j = 0; j <= 16; j++) {
       this.graphics.moveTo(j * cellWidth, 0);
       this.graphics.lineTo(j * cellWidth, 768);
     }
@@ -90,7 +96,7 @@ export class Game extends Scene {
       classType: Enemy,
       runChildUpdate: true,
       createCallback: (enemy) => {
-        enemy.setTexture("enemy");
+        enemy.setTexture("sprites", 270);
         enemy.path = this.path;
       },
     });
@@ -105,7 +111,7 @@ export class Game extends Scene {
         turret.map = this.map;
         turret.enemies = this.enemies;
         turret.bullets = this.bullets;
-        turret.setTexture("turret");
+        turret.setTexture("sprites", 204);
       },
     });
   }
@@ -115,7 +121,7 @@ export class Game extends Scene {
       classType: Bullet,
       runChildUpdate: true,
       createCallback: (bullet) => {
-        bullet.setTexture("bullet");
+        bullet.setTexture("sprites", 275);
       },
     });
   }

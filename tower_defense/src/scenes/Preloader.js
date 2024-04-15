@@ -1,6 +1,4 @@
 import { Scene } from "phaser";
-import { LocalStorageManager } from "../classes/LocalStorageManager";
-import { SessionStorageManager } from "../classes/SessionStorageManager";
 
 export class Preloader extends Scene {
   constructor() {
@@ -27,8 +25,13 @@ export class Preloader extends Scene {
   preload() {
     //  Load the assets for the game - Replace with your own assets
     this.load.setPath("assets");
-
+    this.load.spritesheet("sprites", "towerDefense.png", {
+      frameWidth: 64,
+      frameHeight: 64,
+      startFrame: 0,
+    });
     this.load.image("logo", "logo.png");
+    this.load.image("map", "map.png");
     this.load.image("bullet", "bullet.png");
     this.load.image("enemy", "enemy.png");
     this.load.image("turret", "turret.png");
@@ -37,8 +40,6 @@ export class Preloader extends Scene {
   create() {
     //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
     //  For example, you can define global animations here, so we can use them in other scenes.
-    this.game.localStorageManager = new LocalStorageManager("ptd_");
-    this.game.sessionStorageManager = new SessionStorageManager("ptd_");
 
     //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
     this.scene.start("MainMenu");
