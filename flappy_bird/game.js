@@ -58,7 +58,11 @@ class Preloader extends Phaser.Scene {
   preload() {
     //  Load the assets for the game - Replace with your own assets
     this.load.image("background", "assets/bg.png");
-    this.load.multiatlas("bird", "assets/dragon.json", "assets");
+    this.load.multiatlas(
+      "eye_dragon",
+      "assets/eye_dragon/eye_dragon.json",
+      "assets/eye_dragon/sprites"
+    );
     this.load.image("pipe", "assets/barrier.png");
     this.load.image("bg_front_layer", "assets/layer-5.png");
   }
@@ -87,14 +91,14 @@ class MainMenu extends Phaser.Scene {
     let bird = this.add.sprite(
       this.game.config.width / 2,
       this.game.config.height / 4,
-      "bird",
+      "eye_dragon",
       "a1.png"
     );
 
     this.anims.create({
       key: "dragon-fly",
       frameRate: 8,
-      frames: this.anims.generateFrameNames("bird", {
+      frames: this.anims.generateFrameNames("eye_dragon", {
         start: 0,
         end: 7,
         prefix: "a",
@@ -154,7 +158,7 @@ class playGame extends Phaser.Scene {
     this.bird = this.physics.add.sprite(
       80,
       game.config.height / 2,
-      "bird",
+      "eye_dragon",
       "a1.png"
     );
     this.bird.setDisplaySize(30, 30);
