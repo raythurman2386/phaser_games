@@ -27,13 +27,15 @@
         let plane;
         let pumpkin_dude;
         let king;
+        let dragon;
 
         function initScene() { }
         function preloadScene() {
             this.load.spritesheet("plane", "./assets/plane.png", { frameWidth: 512, frameHeight: 512 })
+            this.load.multiatlas("dragon", "./assets/dragon.json", "./assets")
             this.load.spritesheet("pumpkin_dude", "./assets/pumpkin_dude.png", { frameWidth: 16, frameHeight: 32 })
             this.load.image("king", "./assets/king.png")
-            this.load.atlas("a-king", "./assets/a-king.png", "./assets/a-king_atlas.json")
+            this.load.atlas("a-king", "./assets/kinga.png", "./assets/a-king_atlas.json")
         }
         function createScene() {
             this.anims.create({
@@ -105,6 +107,16 @@
                     king.play("attack");
                 }
             });
+
+            this.anims.create({
+                key: 'dragon-fly',
+                frameRate: 8,
+                frames: this.anims.generateFrameNames('dragon', { start: 0, end: 7, prefix: 'a', suffix: ".png" }),
+                repeat: -1
+            });
+
+            dragon = this.add.sprite(320, 540, 'dragon', 'a1.png');
+            dragon.play('dragon-fly');
         }
         function updateScene() { }
 
