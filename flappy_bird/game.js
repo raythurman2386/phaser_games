@@ -44,23 +44,88 @@ window.onload = function () {
         },
       },
     },
-    scene: playGame,
+    scene: [Preloader, MainMenu, playGame, GameOver],
   };
   game = new Phaser.Game(gameConfig);
   window.focus();
 };
 
+class Preloader extends Phaser.Scene {
+  constructor() {
+    super("Preloader");
+  }
+
+  preload() {
+    //  Load the assets for the game - Replace with your own assets
+    this.load.image("background", "assets/bg.png");
+    this.load.multiatlas("bird", "assets/dragon.json", "assets");
+    this.load.image("pipe", "assets/barrier.png");
+    this.load.image("bg_front_layer", "assets/layer-5.png");
+  }
+
+  create() {
+    //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
+    //  For example, you can define global animations here, so we can use them in other scenes.
+
+    //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
+    this.scene.start("MainMenu");
+  }
+}
+
+class MainMenu extends Phaser.Scene {
+  constructor() {
+    super("MainMenu");
+  }
+
+  create() {
+    this.add.image(
+      this.game.config.width / 2,
+      this.game.config.height / 2,
+      "background"
+    );
+
+    let bird = this.add.sprite(
+      this.game.config.width / 2,
+      this.game.config.height / 4,
+      "bird",
+      "a1.png"
+    );
+
+    this.anims.create({
+      key: "dragon-fly",
+      frameRate: 8,
+      frames: this.anims.generateFrameNames("bird", {
+        start: 0,
+        end: 7,
+        prefix: "a",
+        suffix: ".png",
+      }),
+      repeat: -1,
+    });
+
+    bird.play("dragon-fly");
+
+    this.add
+      .text(this.game.config.width / 2, this.game.config.height / 1.5, "Play", {
+        fontFamily: "Arial Black",
+        fontSize: 24,
+        color: "#ffffff",
+        stroke: "#000000",
+        strokeThickness: 8,
+        align: "center",
+      })
+      .setOrigin(0.5);
+
+    this.input.once("pointerdown", () => {
+      this.scene.start("PlayGame");
+    });
+  }
+}
+
 class playGame extends Phaser.Scene {
   constructor() {
     super("PlayGame");
     this.leftmostPipe = null;
-  }
-
-  preload() {
-    this.load.image("background", "assets/bg.png");
-    this.load.image("bird", "assets/a1.png");
-    this.load.image("pipe", "assets/barrier.png");
-    this.load.image("bg_front_layer", "assets/layer-5.png");
   }
 
   create() {
@@ -86,8 +151,14 @@ class playGame extends Phaser.Scene {
     }
 
     this.pipeGroup.setVelocityX(-gameOptions.birdSpeed);
-    this.bird = this.physics.add.sprite(80, game.config.height / 2, "bird");
+    this.bird = this.physics.add.sprite(
+      80,
+      game.config.height / 2,
+      "bird",
+      "a1.png"
+    );
     this.bird.setDisplaySize(30, 30);
+    this.bird.play("dragon-fly");
 
     this.bird.body.gravity.y = gameOptions.birdGravity;
     this.input.on("pointerdown", this.flap, this);
@@ -214,6 +285,44 @@ class playGame extends Phaser.Scene {
       gameOptions.localStorageName,
       Math.max(this.score, this.topScore)
     );
-    this.scene.start("PlayGame");
+    this.scene.start("GameOver");
+  }
+}
+
+class GameOver extends Phaser.Scene {
+  constructor() {
+    super("GameOver");
+  }
+
+  create() {
+    this.cameras.main.setBackgroundColor(0xff0000);
+
+    this.add
+      .image(
+        this.game.config.width / 2,
+        this.game.config.height / 2,
+        "background"
+      )
+      .setAlpha(0.5);
+
+    this.add
+      .text(
+        this.game.config.width / 2,
+        this.game.config.height / 2,
+        "Game Over",
+        {
+          fontFamily: "Arial Black",
+          fontSize: 24,
+          color: "#ffffff",
+          stroke: "#000000",
+          strokeThickness: 4,
+          align: "center",
+        }
+      )
+      .setOrigin(0.5);
+
+    this.input.once("pointerdown", () => {
+      this.scene.start("MainMenu");
+    });
   }
 }
