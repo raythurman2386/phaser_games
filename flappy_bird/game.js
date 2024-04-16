@@ -21,6 +21,7 @@ const gameOptions = {
   // local storage object name
   localStorageName: "bestFlappyScore",
   backgroundSpeed: 1,
+  bird_texture: "raven",
 };
 
 window.onload = function () {
@@ -44,41 +45,116 @@ window.onload = function () {
         },
       },
     },
-    scene: [Preloader, MainMenu, playGame, GameOver],
+    scene: [Boot, Preloader, MainMenu, playGame, GameOver],
   };
   game = new Phaser.Game(gameConfig);
   window.focus();
 };
+
+class Boot extends Phaser.Scene {
+  constructor() {
+    super("Boot");
+  }
+
+  preload() {
+    this.load.image("background", `assets/background/day/bg.png`);
+  }
+
+  create() {
+    this.scene.start("Preloader");
+  }
+}
 
 class Preloader extends Phaser.Scene {
   constructor() {
     super("Preloader");
   }
 
+  init() {
+    this.add.image(
+      this.game.config.width / 2,
+      this.game.config.height / 2,
+      "background"
+    );
+    //  A simple progress bar. This is the outline of the bar.
+    this.add
+      .rectangle(
+        this.game.config.width / 2,
+        this.game.config.height / 2,
+        this.game.config.width / 1.2,
+        32
+      )
+      .setStrokeStyle(1, 0xffffff);
+  }
+
   preload() {
-    //  Load the assets for the game - Replace with your own assets
-    this.load.image("background", "assets/bg.png");
     this.load.multiatlas(
       "eye_dragon",
       "assets/eye_dragon/eye_dragon.json",
       "assets/eye_dragon/sprites"
     );
-    this.load.image("pipe", "assets/barrier.png");
-    this.load.image("bg_front_layer", "assets/layer-5.png");
+    this.load.multiatlas(
+      "raven",
+      "assets/raven/raven.json",
+      "assets/raven/sprites"
+    );
+    this.load.multiatlas(
+      "bird_king",
+      "assets/bird_king/bird_king.json",
+      "assets/bird_king/sprites"
+    );
+    this.load.multiatlas(
+      "pink_beast",
+      "assets/pink_beast/pink_beast.json",
+      "assets/pink_beast/sprites"
+    );
+    this.load.multiatlas(
+      "cute_dragon",
+      "assets/cute_dragon/cute_dragon.json",
+      "assets/cute_dragon/sprites"
+    );
+    this.load.image("pipe", "assets/barrier/barrier.png");
+    this.load.image(
+      "bg_front_layer",
+      `assets/background/${this.get_time()}/fg.png`
+    );
+  }
+
+  get_time() {
+    const currentHour = new Date().getHours();
+
+    let timeOfDay = "";
+    if (currentHour >= 6 && currentHour < 18) {
+      timeOfDay = "day";
+      return timeOfDay;
+    } else {
+      timeOfDay = "night";
+      return timeOfDay;
+    }
   }
 
   create() {
     //  When all the assets have loaded, it's often worth creating global objects here that the rest of the game can use.
     //  For example, you can define global animations here, so we can use them in other scenes.
-
+    this.anims.create({
+      key: "fly",
+      frameRate: 10,
+      frames: this.anims.generateFrameNames(gameOptions.bird_texture, {
+        start: 1,
+        end: 8,
+        prefix: "a",
+        suffix: ".png",
+      }),
+      repeat: -1,
+    });
     //  Move to the MainMenu. You could also swap this for a Scene Transition, such as a camera fade.
     this.scene.start("MainMenu");
   }
 }
 
 class MainMenu extends Phaser.Scene {
-  constructor() {
-    super("MainMenu");
+  constructor(texture) {
+    super("MainMenu", texture);
   }
 
   create() {
@@ -91,23 +167,11 @@ class MainMenu extends Phaser.Scene {
     let bird = this.add.sprite(
       this.game.config.width / 2,
       this.game.config.height / 4,
-      "eye_dragon",
+      gameOptions.bird_texture,
       "a1.png"
     );
 
-    this.anims.create({
-      key: "dragon-fly",
-      frameRate: 8,
-      frames: this.anims.generateFrameNames("eye_dragon", {
-        start: 0,
-        end: 7,
-        prefix: "a",
-        suffix: ".png",
-      }),
-      repeat: -1,
-    });
-
-    bird.play("dragon-fly");
+    bird.play("fly");
 
     this.add
       .text(this.game.config.width / 2, this.game.config.height / 1.5, "Play", {
@@ -158,11 +222,11 @@ class playGame extends Phaser.Scene {
     this.bird = this.physics.add.sprite(
       80,
       game.config.height / 2,
-      "eye_dragon",
+      gameOptions.bird_texture,
       "a1.png"
     );
     this.bird.setDisplaySize(30, 30);
-    this.bird.play("dragon-fly");
+    this.bird.play("fly");
 
     this.bird.body.gravity.y = gameOptions.birdGravity;
     this.input.on("pointerdown", this.flap, this);
