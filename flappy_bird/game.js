@@ -141,7 +141,7 @@ class Preloader extends Phaser.Scene {
       frameRate: 10,
       frames: this.anims.generateFrameNames(gameOptions.bird_texture, {
         start: 1,
-        end: 8,
+        end: 7,
         prefix: "a",
         suffix: ".png",
       }),
