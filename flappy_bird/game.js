@@ -34,7 +34,7 @@ window.onload = function () {
       width: 320,
       height: 480,
     },
-    pixelArt: true,
+    pixelArt: false,
     physics: {
       default: "arcade",
       arcade: {
@@ -57,17 +57,18 @@ class playGame extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("background", "assets/background.png");
-    this.load.image("bird", "assets/bird.png");
-    this.load.image("pipe", "assets/pipe.png");
+    this.load.image("background", "assets/bg.png");
+    this.load.image("bird", "assets/a1.png");
+    this.load.image("pipe", "assets/barrier.png");
+    this.load.image("bg_front_layer", "assets/layer-5.png");
   }
 
   create() {
     this.background = this.add.tileSprite(
       game.config.width / 2,
       game.config.height / 2,
-      game.config.width,
-      game.config.height,
+      0,
+      0,
       "background"
     );
     this.background.setScale(
@@ -105,6 +106,20 @@ class playGame extends Phaser.Scene {
       callbackScope: this,
       loop: false,
     });
+
+    this.foreground = this.add.tileSprite(
+      game.config.width / 2,
+      game.config.height / 2,
+      0,
+      0,
+      "bg_front_layer"
+    );
+    this.foreground.setScale(
+      Math.max(
+        game.config.width / this.background.width,
+        game.config.height / this.background.height
+      )
+    );
   }
   delayDone() {
     this.bird.setSize(this.bird.width, this.bird.height, true);
@@ -138,7 +153,7 @@ class playGame extends Phaser.Scene {
 
     this.pipePool[0].x = newPipeX;
     this.pipePool[0].y = pipeHolePosition - pipeHoleHeight / 2;
-    this.pipePool[0].setOrigin(0, 1);
+    this.pipePool[0].setOrigin(0, 1).setFlipY(true);
     this.pipePool[1].x = newPipeX;
     this.pipePool[1].y = pipeHolePosition + pipeHoleHeight / 2;
     this.pipePool[1].setOrigin(0, 0);
@@ -162,6 +177,7 @@ class playGame extends Phaser.Scene {
 
   update() {
     this.background.tilePositionX += gameOptions.backgroundSpeed;
+    this.foreground.tilePositionX += gameOptions.backgroundSpeed;
     this.physics.world.collide(
       this.bird,
       this.pipeGroup,
