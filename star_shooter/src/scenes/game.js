@@ -53,6 +53,14 @@ export default class Game extends Phaser.Scene {
       .tileSprite(0, 0, this.width, this.height, "background-layer-3")
       .setOrigin(0)
       .setScrollFactor(0, 1);
+
+    this.tweens.add({
+      targets: this.background3,
+      duration: 1200,
+      alpha: { from: 1, to: 0 },
+      yoyo: true,
+      repeat: -1,
+    });
   }
 
   spawnShake() {
