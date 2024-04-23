@@ -1,26 +1,27 @@
-import { Game, GameOver } from "./scenes";
+import Phaser from "phaser";
+import Bootloader from "./scenes/bootloader";
+import Outro from "./scenes/outro";
+import Splash from "./scenes/splash";
+import Transition from "./scenes/transition";
+import Game from "./scenes/game";
 
-//  Find out more information about the Game Config at:
-//  https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
 const config = {
-  type: Phaser.AUTO,
-  width: 600,
-  height: 320,
-  parent: "game-container",
-  backgroundColor: "#028af8",
-  pixelArt: false,
-  physics: {
-    default: "arcade",
-    arcade: {
-      gravity: { y: 800 },
-    },
-    debug: false,
-  },
+  width: 1000,
+  height: 800,
   scale: {
     mode: Phaser.Scale.FIT,
     autoCenter: Phaser.Scale.CENTER_BOTH,
   },
-  scene: [Game, GameOver],
+  autoRound: false,
+  parent: "contenedor",
+  physics: {
+    default: "arcade",
+    arcade: {
+      gravity: { y: 0 },
+      debug: false,
+    },
+  },
+  scene: [Bootloader, Splash, Transition, Game, Outro],
 };
 
-export default new Phaser.Game(config);
+const game = new Phaser.Game(config);
