@@ -28,12 +28,16 @@
         let pumpkin_dude;
         let king;
         let dragon;
+        let shaolin;
 
         function initScene() { }
         function preloadScene() {
             this.load.spritesheet("plane", "./assets/plane.png", { frameWidth: 512, frameHeight: 512 })
             this.load.multiatlas("dragon", "./assets/dragon.json", "./assets")
             this.load.spritesheet("pumpkin_dude", "./assets/pumpkin_dude.png", { frameWidth: 16, frameHeight: 32 })
+            this.load.spritesheet("shaolin", "./assets/shaolin_running_strip.png", { frameWidth: 45, frameHeight: 61 })
+            this.load.spritesheet("shaolin_jump", "./assets/shaolin_jump_strip.png", { frameWidth: 36, frameHeight: 59 })
+            this.load.spritesheet("shaolin_slide", "./assets/shaolin_slide_strip.png", { frameWidth: 51, frameHeight: 59 })
             this.load.image("king", "./assets/king.png")
             this.load.atlas("a-king", "./assets/kinga.png", "./assets/a-king_atlas.json")
         }
@@ -66,8 +70,8 @@
                 }
             });
 
-            // <!-- Pumkin dude animations -->
-            this.anims.create({
+            // Pumkin dude animations
+            /* this.anims.create({
                 key: "run",
                 frameRate: 8,
                 frames: this.anims.generateFrameNumbers("pumpkin_dude", { start: 0, end: 6 }),
@@ -75,7 +79,32 @@
             })
 
             pumpkin_dude = this.add.sprite(320, 180, "pumkin_dude");
-            pumpkin_dude.play("run")
+            pumpkin_dude.play("run") */
+
+            // <!-- Pumkin dude animations -->
+            this.anims.create({
+                key: "run_ninja",
+                frameRate: 12,
+                frames: this.anims.generateFrameNumbers("shaolin", { start: 0, end: 4 }),
+                repeat: -1
+            })
+            this.anims.create({
+                key: "jump_ninja",
+                frameRate: 12,
+                frames: this.anims.generateFrameNumbers("shaolin_jump", { start: 0, end: 2 }),
+                repeat: 0,
+                yoyo: true
+            })
+            this.anims.create({
+                key: "slide_ninja",
+                frameRate: 12,
+                frames: this.anims.generateFrameNumbers("shaolin_slide", { start: 0, end: 3 }),
+                repeat: 0,
+                yoyo: true
+            })
+
+            shaolin = this.add.sprite(320, 180, "shaolin")
+            shaolin.play("run_ninja")
 
             // <!-- King Animations -->
             this.anims.create({

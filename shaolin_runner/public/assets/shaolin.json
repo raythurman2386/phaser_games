@@ -1,0 +1,83 @@
+{
+	"textures": [
+		{
+			"image": "shaolin.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 531,
+				"h": 63
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "shaolin_running_strip.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 225,
+						"h": 61
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 0,
+						"w": 216,
+						"h": 61
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 216,
+						"h": 61
+					}
+				},
+				{
+					"filename": "shaolin_slide_strip.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 204,
+						"h": 59
+					},
+					"spriteSourceSize": {
+						"x": 3,
+						"y": 0,
+						"w": 201,
+						"h": 59
+					},
+					"frame": {
+						"x": 219,
+						"y": 1,
+						"w": 201,
+						"h": 59
+					}
+				},
+				{
+					"filename": "shaolin_jump_strip.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 108,
+						"h": 59
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 108,
+						"h": 59
+					},
+					"frame": {
+						"x": 422,
+						"y": 1,
+						"w": 108,
+						"h": 59
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:04d242710ad6950faa48fc8e78059081:ca761b78e4f87ab193cc9f62bd4aea66:5019f4a2fe37b230c942fb894c687ae2$"
+	}
+}
