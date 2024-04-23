@@ -65,6 +65,13 @@ export class Game extends Scene {
     this.center_width = this.width / 2;
     this.center_height = this.height / 2;
 
+    const canvas = this.sys.game.canvas;
+
+    // Disable the right-click context menu on the canvas
+    canvas.oncontextmenu = function (e) {
+      e.preventDefault();
+    };
+
     this.add
       .image(this.center_width, this.center_height, "background")
       .setSize(this.game.config.width, this.game.config.height);
@@ -112,7 +119,6 @@ export class Game extends Scene {
       this.center_height + 200,
       "shaolin"
     );
-    this.player.play("run_ninja");
 
     this.scoreText = this.add.bitmapText(
       this.center_width,
@@ -142,7 +148,17 @@ export class Game extends Scene {
 
     this.loadAudios();
     this.playMusic();
-    this.input.on("pointerdown", (pointer) => this.player.jump(), this);
+    this.input.on(
+      "pointerdown",
+      (pointer) => {
+        if (pointer.button === 0) {
+          this.player.jump();
+        } else {
+          this.player.slide();
+        }
+      },
+      this
+    );
 
     this.updateScoreEvent = this.time.addEvent({
       delay: 100,
@@ -190,6 +206,7 @@ export class Game extends Scene {
   }
 
   update() {
+    this.player.update();
     if (Phaser.Input.Keyboard.JustDown(this.SPACE)) {
       this.player.jump();
     } else if (this.player.body.blocked.down) {
@@ -203,7 +220,7 @@ export class Game extends Scene {
     this.theme.stop();
     this.playAudio("dead");
     this.registry.set("score", "" + this.score);
-    this.scene.start("gameover");
+    this.scene.start("GameOver");
   }
 
   updateScore(points = 1) {

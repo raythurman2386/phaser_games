@@ -12,17 +12,37 @@ export class Player extends Phaser.GameObjects.Sprite {
     this.health = 100;
     this.body.mass = 10;
     this.body.setDragY = 10;
+    this.play("run_ninja");
   }
 
   jump() {
+    if (!this.body.blocked.down) return;
     this.play("jump_ninja");
     this.body.velocity.y = -300;
-    this.once(Phaser.Animations.Events.SPRITE_ANIMATION_COMPLETE, () => {
-      this.land();
+    this.jumping = true;
+
+    this.once("animationcomplete", () => {
+      this.jumping = false;
+      this.play("run_ninja");
     });
   }
 
-  land() {
-    this.play("run_ninja");
+  slide() {
+    if (!this.body.blocked.down) return;
+    this.play("slide_ninja");
+    this.sliding = true;
+
+    this.body.setSize(this.width, this.height / 2);
+    this.body.setOffset(0, this.height / 2);
+
+    this.once("animationcomplete", () => {
+      if (this.anims.currentAnim.key === "slide_ninja") {
+        this.sliding = false;
+        this.play("run_ninja");
+
+        this.body.setSize(this.width, this.height);
+        this.body.setOffset(0, 0);
+      }
+    });
   }
 }
