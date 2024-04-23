@@ -18,7 +18,7 @@ export class Player extends Phaser.GameObjects.Sprite {
   jump() {
     if (!this.body.blocked.down) return;
     this.play("jump_ninja");
-    this.body.velocity.y = -300;
+    this.body.velocity.y = -400;
     this.jumping = true;
 
     this.once("animationcomplete", () => {

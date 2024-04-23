@@ -20,6 +20,7 @@ export class Game extends Scene {
     this.load.image("background", "assets/images/shaolin_background_a.png");
     this.load.image("floor", "assets/images/shaolin_background_floor.png");
     this.load.audio("coin", "assets/sounds/coin.mp3");
+    this.load.image("cloud", "assets/images/cloud.png");
     this.load.audio("jump", "assets/sounds/jump.mp3");
     this.load.audio("dead", "assets/sounds/dead.mp3");
     this.load.audio("theme", "assets/sounds/theme.mp3");
