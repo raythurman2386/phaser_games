@@ -12,13 +12,13 @@ export default class Outro extends Phaser.Scene {
     this.splashLayer = this.add.layer();
     this.text = [
       "Score: " + this.registry.get("score_player1"),
-      "The evil forces among with",
+      "The evil forces along with",
       "their tyrannical leader",
       "were finally wiped out.",
       "Thanks to you, Commander",
       "And the powah of whatever made you",
       "feel like trying my game. Thank You!",
-      " - press enter - ",
+      " - click or press enter - ",
     ];
     this.showHistory();
     this.showPlayer();
