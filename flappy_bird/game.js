@@ -114,6 +114,8 @@ class Preloader extends Phaser.Scene {
       "assets/cute_dragon/sprites"
     );
     this.load.image("pipe", "assets/barrier/barrier.png");
+    this.load.image("mute", "assets/blue_boxCross.png");
+    this.load.image("unmute", "assets/blue_boxCheckmark.png");
     this.load.image(
       "bg_front_layer",
       `assets/background/${this.get_time()}/fg.png`
@@ -184,9 +186,42 @@ class MainMenu extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    this.input.once("pointerdown", () => {
-      this.scene.start("PlayGame");
+    // this.input.once("pointerdown", () => {
+    //   this.scene.start("PlayGame");
+    // });
+    this.addSoundButtons();
+  }
+
+  addSoundButtons() {
+    this.muteButton = this.add.image(this.game.renderer.width - 50, 50, "mute");
+    this.muteButton.setInteractive();
+    this.muteButton.on("pointerdown", () => {
+      this.toggleSound();
     });
+
+    this.unmuteButton = this.add.image(
+      this.game.renderer.width - 50,
+      50,
+      "unmute"
+    );
+    this.unmuteButton.setInteractive();
+    this.unmuteButton.on("pointerdown", () => {
+      this.toggleSound();
+    });
+
+    this.unmuteButton.setVisible(false);
+  }
+
+  toggleSound() {
+    if (this.game.sound.mute) {
+      this.game.sound.mute = false;
+      this.muteButton.setVisible(false);
+      this.unmuteButton.setVisible(true);
+    } else {
+      this.game.sound.mute = true;
+      this.muteButton.setVisible(true);
+      this.unmuteButton.setVisible(false);
+    }
   }
 }
 
